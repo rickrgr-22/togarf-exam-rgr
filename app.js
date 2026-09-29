@@ -5,7 +5,7 @@
   const BY_ID = Object.fromEntries(QS.map(q => [q.id, q]));
   const KNOW = QS.filter(q => !q.scenario).map(q => q.id);
   const SCEN = QS.filter(q => q.scenario).map(q => q.id);
-  const EXAM_DATE = new Date(2026, 9, 9);   // 9 oct 2026
+  const EXAM_DATE = new Date(2026, 9, 2);   // viernes 2 oct 2026, 1 pm
   const PASS = 60;
   const KEY = "togaf-ogea103-v1";
   const $app = document.getElementById("app");
@@ -49,18 +49,16 @@
     const today = new Date(); today.setHours(0, 0, 0, 0);
     const days = Math.round((EXAM_DATE - today) / 864e5);
     const el = document.getElementById("countdown");
-    el.innerHTML = days > 0 ? `Examen 9 oct 2026 · faltan <b>${days}</b> día${days === 1 ? "" : "s"}`
-      : days === 0 ? "<b>¡Hoy es el examen! Éxito 💪</b>" : "Examen: 9 oct 2026";
+    el.innerHTML = days > 0 ? `Examen vie 2 oct, 1 pm · faltan <b>${days}</b> día${days === 1 ? "" : "s"}`
+      : days === 0 ? "<b>¡Hoy es el examen! Éxito 💪</b>" : "Examen: 2 oct 2026";
   }
 
   // ---------- study plan ----------
   const PLAN = [
-    { date: new Date(2026, 9, 3), title: "Fundamentos I", text: "Preguntas de conocimiento 1–50 en modo estudio. Lee cada explicación y el truco aunque aciertes.", sets: [{ label: "Estudiar conocimiento 1–50", ids: () => KNOW.slice(0, 50), mode: "study" }] },
-    { date: new Date(2026, 9, 4), title: "Fundamentos II", text: "Conocimiento 51–100 y luego repasa todo lo que hayas fallado hasta hoy.", sets: [{ label: "Estudiar conocimiento 51–100", ids: () => KNOW.slice(50, 100), mode: "study" }, { label: "Repasar falladas", ids: wrongIds, mode: "study" }] },
-    { date: new Date(2026, 9, 5), title: "Fundamentos III", text: `Conocimiento 101–${KNOW.length} y repaso de falladas. Al terminar ya viste todo el temario de conocimiento.`, sets: [{ label: `Estudiar conocimiento 101–${KNOW.length}`, ids: () => KNOW.slice(100), mode: "study" }, { label: "Repasar falladas", ids: wrongIds, mode: "study" }] },
-    { date: new Date(2026, 9, 6), title: "Escenarios", text: `Las ${SCEN.length} preguntas de escenario. Busca el patrón: fase del ADM implicada + técnica de TOGAF que resuelve el problema.`, sets: [{ label: `Estudiar ${SCEN.length} escenarios`, ids: () => SCEN.slice(), mode: "study" }] },
-    { date: new Date(2026, 9, 7), title: "Vuelta completa", text: "Las 183 preguntas en orden aleatorio. Las que falles se repiten al final de la sesión.", sets: [{ label: "Las 183 en aleatorio", ids: () => shuffle(QS.map(q => q.id)), mode: "study" }, { label: "Repasar falladas", ids: wrongIds, mode: "study" }] },
-    { date: new Date(2026, 9, 8), title: "Simulacros", text: "Dos simulacros (40 de conocimiento + 8 escenarios, con tiempo). Entre uno y otro repasa las falladas. Duerme bien.", sets: [{ label: "Simulacro de examen", ids: null, mode: "exam" }, { label: "Repasar falladas", ids: wrongIds, mode: "study" }] }
+    { date: new Date(2026, 8, 29), title: "Conocimiento I · 3–4 h", text: "Conocimiento 1–75 en modo estudio (≈2 h). Lee la explicación y el truco aunque aciertes. Cierra repasando las falladas.", sets: [{ label: "Estudiar conocimiento 1–75", ids: () => KNOW.slice(0, 75), mode: "study" }, { label: "Repasar falladas", ids: wrongIds, mode: "study" }] },
+    { date: new Date(2026, 8, 30), title: "Conocimiento II + Escenarios · 5–6 h", text: `Conocimiento 76–${KNOW.length} (≈2 h), después los ${SCEN.length} escenarios (≈3 h): identifica la fase del ADM y la técnica de TOGAF que resuelve el problema. Cierra con falladas.`, sets: [{ label: `Estudiar conocimiento 76–${KNOW.length}`, ids: () => KNOW.slice(75), mode: "study" }, { label: `Estudiar ${SCEN.length} escenarios`, ids: () => SCEN.slice(), mode: "study" }, { label: "Repasar falladas", ids: wrongIds, mode: "study" }] },
+    { date: new Date(2026, 9, 1), title: "Vuelta completa + Simulacro · 5–6 h", text: "Las 183 en aleatorio (≈2.5 h; las falladas se repiten al final), repaso de falladas y un simulacro con tiempo. Meta: ≥80%. Duerme temprano.", sets: [{ label: "Las 183 en aleatorio", ids: () => shuffle(QS.map(q => q.id)), mode: "study" }, { label: "Repasar falladas", ids: wrongIds, mode: "study" }, { label: "Simulacro de examen", ids: null, mode: "exam" }] },
+    { date: new Date(2026, 9, 2), title: "Mañana del examen · 1 h máx.", text: "Sólo repasar falladas y leer trucos. Termina a las 11:00, come bien y llega descansado a la 1 pm. Nada de simulacros hoy.", sets: [{ label: "Repasar falladas", ids: wrongIds, mode: "study" }] }
   ];
 
   // ---------- session ----------
@@ -318,11 +316,11 @@
         <div class="card click" onclick="App.mode('unseen')"><h3>✨ No vistas</h3><p>${unseen} pregunta${unseen === 1 ? "" : "s"} que aún no respondes.</p></div>
       </div>
 
-      <h2>Plan de 6 días (3 – 8 de octubre)</h2>
+      <h2>Plan intensivo (29 sep – 2 oct)</h2>
       <div class="days">${planHtml}</div>
 
       <h2>Historial de intentos</h2>
-      ${atts.length ? historyHtml(atts) : '<p class="muted">Aún no hay intentos. ¡Empieza con el Día 1!</p>'}
+      ${atts.length ? historyHtml(atts) : '<p class="muted">Aún no hay intentos. ¡Empieza con el Día 1 hoy!</p>'}
 
       <h2>Consejos para el examen</h2>
       <div class="card"><ul style="margin:0;padding-left:20px">
