@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TOGAF OGEA-103 · Guía-Examen</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand" onclick="App.home()">
+    <span class="logo">T</span>
+    <div><strong>TOGAF OGEA-103</strong><small>Guía-examen · 183 preguntas</small></div>
+  </div>
+  <div class="countdown" id="countdown"></div>
+  <button class="icon-btn" id="themeBtn" title="Cambiar tema" onclick="App.toggleTheme()">◐</button>
+</header>
+<main id="app"></main>
+<div id="zoom" class="zoom" onclick="this.classList.remove('open')"><img alt=""></div>
+<script src="questions.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
